@@ -3,6 +3,8 @@
 
 #include <stdexcept>
 #include <cmath>
+#include <iostream>
+
 class Vector3 {
     public:
         float x, y, z;
@@ -23,5 +25,8 @@ class Vector3 {
         float length();
         Vector3 normalised();
 };
+
+// printing
+std::ostream& operator<<(std::ostream os, const Vector3& vector);
 
 #endif

@@ -42,3 +42,13 @@ float Vector3::length()
 {
     return (std::sqrt(x * x + y * y + z * z));
 }
+
+Vector3 Vector3::normalised()
+{
+    return (*this / length());
+}
+
+std::ostream& operator<<(std::ostream os, const Vector3& vector)
+{
+    os << "x:" << vector.x << ",y:" << vector.y << ",z:" << vector.z;
+}
