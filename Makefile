@@ -4,7 +4,7 @@ LIB_DIR = libs/
 LIB = $(addprefix $(LIB_DIR), glad.c)
 LIB_OBJ = $(addprefix $(LIB_DIR), $(notdir $(LIB:.c=.o)))
 SRC_DIR = src/
-SRC = $(addprefix $(SRC_DIR), App.cpp DemoApp.cpp main.cpp)
+SRC = $(addprefix $(SRC_DIR), App.cpp DemoApp.cpp RayTraceApp.cpp main.cpp)
 OBJ_DIR = obj/
 OBJ = $(addprefix $(OBJ_DIR), $(notdir $(SRC:.cpp=.o)))
 
