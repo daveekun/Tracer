@@ -8,7 +8,7 @@ SRC = $(addprefix $(SRC_DIR), App.cpp DemoApp.cpp RayTraceApp.cpp main.cpp)
 OBJ_DIR = obj/
 OBJ = $(addprefix $(OBJ_DIR), $(notdir $(SRC:.cpp=.o)))
 
-FLAGS = -Iinclude --std=c++20 #-Wall -Wextra -Werror
+FLAGS = -Iinclude/ --std=c++20 #-Wall -Wextra -Werror
 
 all: $(NAME)
 

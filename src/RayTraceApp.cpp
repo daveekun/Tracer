@@ -1,42 +1,52 @@
 #include "RayTraceApp.hpp"
 
+RayTraceApp::ShaderSource RayTraceApp::readShaders()
+{
+    std::ifstream vert(vertex_path);
+    std::ifstream frag(fragment_path);
+    std::stringstream vertShader;
+    std::stringstream fragShader;
+
+    std::string line;
+    if (!vert.is_open() || !frag.is_open())
+        std::cerr << "failed to open shader file\n";
+    while (getline(vert, line))
+        vertShader << line << "\n";
+    while (getline(frag, line))
+        fragShader << line << "\n";
+
+    return (RayTraceApp::ShaderSource){ vertShader.str(), fragShader.str() };
+}
+
+unsigned int RayTraceApp::compileShader(GLenum type, std::string source)
+{
+    unsigned int id = glCreateShader(type);
+    const char *s = source.c_str();
+    glShaderSource(id, 1, &s, nullptr);
+    glCompileShader(id);
+    int res;
+    char buf[512];
+    glGetShaderiv(id, GL_COMPILE_STATUS, &res);
+    if (res == GL_FALSE)
+    {
+        std::cerr << "shader compilation failed: " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << std::endl;
+        glGetShaderInfoLog(id, 512, NULL, buf);
+        std::cerr << buf;
+        glDeleteShader(id);
+        return 0;
+    }
+    return id;
+}
+
 void RayTraceApp::setup()
 {
     // moved from header
     unsigned int buffer;
     unsigned int program;
     
-    int res;
-    unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-
-    const char *s = "#version 330 core\n"
-    "layout (location = 0) in vec4 pos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = pos;\n"
-    "}\n";
-
-    glShaderSource(vertex, 1, &s, nullptr);
-    glCompileShader(vertex);
-    glGetShaderiv(vertex, GL_COMPILE_STATUS, &res);
-    if (res == GL_FALSE)
-        std::cerr << "stupid vertex\n";
-
-    unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-
-    const char *f =  "#version 330 core\n"
-    "out vec4 color;\n"
-    "void main()\n"
-    "{\n"
-    "   color = vec4(1.0, 0.0, 1.0, 1.0);\n"
-    "}\n";
-
-    glShaderSource(fragment, 1, &f, nullptr);
-    glCompileShader(fragment);
-
-    glGetShaderiv(fragment, GL_COMPILE_STATUS, &res);
-    if (res == GL_FALSE)
-        std::cerr << "stupid fragment\n";
+    ShaderSource s = readShaders();
+    unsigned int vertex = compileShader(GL_VERTEX_SHADER, s.vertshader);
+    unsigned int fragment = compileShader(GL_FRAGMENT_SHADER, s.fragshader);
 
     program = glCreateProgram();
     glAttachShader(program, vertex);
@@ -44,6 +54,7 @@ void RayTraceApp::setup()
     glLinkProgram(program);
     // glValidateProgram(program);
 
+    int res;
     glGetProgramiv(program, GL_LINK_STATUS, &res);
     if (res == GL_FALSE)
         std::cerr << "stupid program\n";
