@@ -1,15 +1,12 @@
-#include "DemoApp.hpp"
+#include "RayTraceApp.hpp"
 #include <iostream>
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
 int main()
 {
     try
     {
-        DemoApp app{SCR_WIDTH, SCR_HEIGHT};    
+        RayTraceApp app{};    
         app.run();
     }
     catch(const std::exception& e)

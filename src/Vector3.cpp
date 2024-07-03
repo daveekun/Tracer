@@ -1,4 +1,4 @@
-include "Vector3.hpp"
+#include "Vector3.hpp"
 
 Vector3::Vector3(float _x = 0, float _y = 0, float _z = 0) : x(_x), y(_y), z(_z) {}
 Vector3::Vector3(const Vector3& other) : x(other.x), y(other.y), z(other.z) {}

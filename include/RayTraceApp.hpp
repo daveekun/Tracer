@@ -28,7 +28,6 @@ class RayTraceApp : public App
         const std::string vertex_path = "./resources/basic.vert";
         const std::string fragment_path = "./resources/basic.frag";
 
-
     public:
         RayTraceApp() : App(SCR_WIDTH, SCR_HEIGHT, "rt"){};
         void setup() override;
